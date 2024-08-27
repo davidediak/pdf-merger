@@ -40,3 +40,6 @@ export const apiRoutes = new Hono().post(
     return c.body(pdfBytes, { headers: { 'Content-Type': PDF_FILE_TYPE } });
   }
 );
+
+export type AppType = typeof apiRoutes;
+
