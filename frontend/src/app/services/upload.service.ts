@@ -4,7 +4,7 @@ import { hc } from 'hono/client';
 
 @Injectable({ providedIn: 'root' })
 export class UploadService {
-  public client = hc<AppType>('https://pdf-merger-seven.vercel.app/api');
+  public client = hc<AppType>('https://just-merge-pdf.vercel.app/api');
 
   public async uploadFiles(files: File[]) {
     const res = await this.client.upload.$post({ form: { files } });
