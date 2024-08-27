@@ -2,7 +2,7 @@ import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
 import { PDFDocument } from 'pdf-lib';
 import { z } from 'zod';
-import { MAX_FILE_SIZE, PDF_FILE_TYPE } from '../utils';
+import { MAX_FILE_SIZE, MAX_NUMBER_OF_FILES, MIN_NUMBER_OF_FILES, PDF_FILE_TYPE } from '../utils';
 
 export const apiRoutes = new Hono().post(
   '/upload',
@@ -16,8 +16,8 @@ export const apiRoutes = new Hono().post(
             .refine((file) => file?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
             .refine((file) => file?.type === PDF_FILE_TYPE, 'Only .pdf are supported.')
         )
-        .min(2)
-        .max(10),
+        .min(MIN_NUMBER_OF_FILES)
+        .max(MAX_NUMBER_OF_FILES),
     })
   ),
   async (c) => {
