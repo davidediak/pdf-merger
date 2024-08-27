@@ -35,15 +35,12 @@
             "styles": [
               "node_modules/primeng/resources/themes/soho-dark/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "src/styles.scss"
             ],
             "scripts": [],
             "server": "src/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "server.ts"
-            }
+            "prerender": false,
+            "ssr": false
           },
           "configurations": {
             "production": {

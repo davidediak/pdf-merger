@@ -3,7 +3,7 @@
   "platform": "node",
   "scripts": {
     "start": "vercel dev",
-    "dev:be": "tsx watch server/_app.ts",
+    "dev:be": "tsx watch server/node-server.ts",
     "dev:fe": "cd frontend && npm run start",
     "deploy:be": "vercel",
     "build:fe": "cd frontend && npm ci && npm run build"

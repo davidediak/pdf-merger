@@ -1,15 +1,10 @@
-import { Hono } from 'hono';
-import { cors } from 'hono/cors';
 import { handle } from 'hono/vercel';
-import { apiRoutes } from '../routes/api';
+import { initApp } from '../_app';
 
-export const config = {
-  runtime: 'edge',
-};
+/** This file is needed to deploy on vercel */
 
-const app = new Hono().basePath('/api');
-app.use('/*', cors());
-app.route('/', apiRoutes);
-app.get('/', (c) => c.text('Hello! This is a Hono server.'));
+export const config = { runtime: 'edge' };
+
+const app = initApp();
 
 export default handle(app);

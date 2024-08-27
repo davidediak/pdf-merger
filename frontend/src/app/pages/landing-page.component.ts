@@ -29,8 +29,7 @@ import { UploadService } from '../services/upload.service';
           <ng-template pTemplate="header" let-files>
             <div class="flex items-center justify-center flex-col gap-6 font-bold">
               <p-button
-                icon="fa-solid fa-upload"
-                label="Merge!"
+                label="⚡Merge!⚡"
                 [raised]="true"
                 size="large"
                 [styleClass]="'w-64'"
