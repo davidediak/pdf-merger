@@ -1,13 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { MAX_FILE_SIZE, MIN_NUMBER_OF_FILES, PDF_FILE_TYPE } from '@server';
-import { ButtonModule } from 'primeng/button';
-import { FileUploadModule } from 'primeng/fileupload';
+import { PDF_FILE_TYPE } from '@server';
+import { FileUploadComponent } from '../components/file-upload.component';
 import { UploadService } from '../services/upload.service';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-lading-page',
   standalone: true,
-  imports: [FileUploadModule, ButtonModule],
+  imports: [FileUploadComponent],
   template: `
     <div class="p-12 flex justify-center flex-col items-center gap-3 font-sans">
       <h1
@@ -20,72 +19,28 @@ import { UploadService } from '../services/upload.service';
         <p>Just drag&drop 2 or more PDF and then hit the button.</p>
       </div>
       <div class="w-full">
-        <p-fileUpload
-          [multiple]="true"
-          [accept]="fileType"
-          [maxFileSize]="maxFileSize"
-          [customUpload]="true"
-        >
-          <ng-template pTemplate="header" let-files>
-            <div class="flex items-center justify-center flex-col gap-6 font-bold">
-              <p-button
-                label="⚡Merge!⚡"
-                [raised]="true"
-                size="large"
-                [styleClass]="'w-64'"
-                [disabled]="files.length < minNumberOfFiles"
-                (onClick)="uploadHandler(files)"
-              />
-            </div>
-          </ng-template>
-
-          <ng-template pTemplate="empty">
-            <div
-              class="flex items-center justify-center flex-col gap-6 font-bold"
-              [style]="{ height: '50vh' }"
-            >
-              <span class="text-xl capitalize">Drop files here</span>
-            </div>
-          </ng-template>
-        </p-fileUpload>
+        <app-file-upload (uploadHandler)="uploadHandler($event)" />
       </div>
     </div>
   `,
-  styles: [
-    `
-      ::ng-deep .p-fileupload-highlight {
-        background-image: linear-gradient(90deg, silver 50%, transparent 50%),
-          linear-gradient(90deg, silver 50%, transparent 50%),
-          linear-gradient(0deg, silver 50%, transparent 50%),
-          linear-gradient(0deg, silver 50%, transparent 50%);
-        background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
-        background-size: 15px 2px, 15px 2px, 2px 15px, 2px 15px;
-        background-position: left top, right bottom, left bottom, right top;
-        animation: border-dance 1s infinite linear;
-      }
-
-      @keyframes border-dance {
-        0% {
-          background-position: left top, right bottom, left bottom, right top;
-        }
-        100% {
-          background-position: left 15px top, right 15px bottom, left bottom 15px, right top 15px;
-        }
-      }
-    `,
-  ],
 })
 export class LandingPageComponent {
   private readonly _uploadService = inject(UploadService);
-  public maxFileSize = MAX_FILE_SIZE;
-  public fileType = PDF_FILE_TYPE;
-  public minNumberOfFiles = MIN_NUMBER_OF_FILES;
 
   public async uploadHandler(files: File[]) {
     this._uploadService.uploadFiles(files).then((response) => {
-      const file = new Blob([response], { type: PDF_FILE_TYPE });
-      const fileURL = URL.createObjectURL(file);
-      window.open(fileURL);
+      const fileURL = URL.createObjectURL(new Blob([response], { type: PDF_FILE_TYPE }));
+      const n = files.map((file) => file.name.split('.').slice(0, -1).join('.')).join('_') + '.pdf';
+
+      this._downloadFile(fileURL, n);
     });
+  }
+
+  private _downloadFile(fileURL: string, fileName: string) {
+    const a = document.createElement('a');
+    a.href = fileURL;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
   }
 }
