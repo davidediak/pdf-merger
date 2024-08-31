@@ -13,7 +13,7 @@ export const apiRoutes = new Hono().post(
         .array(
           z
             .custom<File>((file) => file instanceof File)
-            .refine((file) => file?.size <= MAX_FILE_SIZE, `Max size is 15MB.`)
+            .refine((file) => file?.size <= MAX_FILE_SIZE, `Max size is 10MB.`)
             .refine((file) => file?.type === PDF_FILE_TYPE, 'Only .pdf are supported.')
         )
         .min(MIN_NUMBER_OF_FILES)
