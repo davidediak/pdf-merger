@@ -5,7 +5,8 @@
     "start": "vercel dev",
     "dev:be": "tsx watch server/node-server.ts",
     "dev:fe": "cd frontend && npm run start",
-    "deploy:be": "vercel",
+    "deploy:be": "wrangler deploy --minify server/_app.ts",
+    "deploy:fe": "vercel --prod",
     "build:fe": "cd frontend && npm ci && npm run build"
   },
   "dependencies": {
@@ -18,6 +19,8 @@
   "devDependencies": {
     "@types/node": "^20.11.17",
     "tsx": "^4.7.1",
-    "vercel": "^32.4.1"
+    "vercel": "^32.4.1",
+    "wrangler": "^3.57.2",
+    "@cloudflare/workers-types": "^4.20240529.0"
   }
 }
